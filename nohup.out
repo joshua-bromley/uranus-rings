@@ -1,0 +1,27 @@
+Traceback (most recent call last):
+  File "/home/jbromley/Research/uranus/ringMigration.py", line 38, in <module>
+    sol = nint.solve_ivp(ddt,(0, 3.14e10),je0)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jbromley/miniconda3/envs/uranus/lib/python3.11/site-packages/scipy/integrate/_ivp/ivp.py", line 591, in solve_ivp
+    message = solver.step()
+              ^^^^^^^^^^^^^
+  File "/home/jbromley/miniconda3/envs/uranus/lib/python3.11/site-packages/scipy/integrate/_ivp/base.py", line 181, in step
+    success, message = self._step_impl()
+                       ^^^^^^^^^^^^^^^^^
+  File "/home/jbromley/miniconda3/envs/uranus/lib/python3.11/site-packages/scipy/integrate/_ivp/rk.py", line 144, in _step_impl
+    y_new, f_new = rk_step(self.fun, t, y, self.f, h, self.A,
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jbromley/miniconda3/envs/uranus/lib/python3.11/site-packages/scipy/integrate/_ivp/rk.py", line 67, in rk_step
+    f_new = fun(t + h, y_new)
+            ^^^^^^^^^^^^^^^^^
+  File "/home/jbromley/miniconda3/envs/uranus/lib/python3.11/site-packages/scipy/integrate/_ivp/base.py", line 138, in fun
+    return self.fun_single(t, y)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jbromley/miniconda3/envs/uranus/lib/python3.11/site-packages/scipy/integrate/_ivp/base.py", line 20, in fun_wrapped
+    return np.asarray(fun(t, y), dtype=dtype)
+                      ^^^^^^^^^
+  File "/home/jbromley/Research/uranus/ringMigration.py", line 26, in ddt
+    dj3 = coeff1*(np.dot(j,n_p))*(j[0]*n_p[1]-j[1]*n_p[0]) + coeff2*(np.dot(j,ns)*(j[0]*ns[1]-j[1]*ns[0])-5*(np.dot(e,ns)*(e[0]*ns[1]-e[1]*ns[0])))
+                  ^^^^^^^^^^^^^
+  File "<__array_function__ internals>", line 200, in dot
+KeyboardInterrupt
