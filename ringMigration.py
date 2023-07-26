@@ -6,7 +6,7 @@ G = 4*np.pi**2 ##Units of Solar Masses, AU and yrs
 M = 4.34e-5 ##Mass of Uranus in solar masses
 J2 = 3343.43e-6 ##J2 of Uranus
 R = 1.6908e-4 ##Radius of Uranus in AU
-a = 100*R ##Semimajor axis of the test particle
+a =60*R ##Semimajor axis of the test particle
 Ms = 1 ##Mass of the sun in solar masses
 ap = 19.165 ##Semi major axis of Uranus in AU
 n_p = [0,0,1] ##Unit vector of Uranus's spin angular momentum
@@ -14,10 +14,10 @@ n_s = [np.sin(np.deg2rad(97.77)),0,np.cos(np.deg2rad(97.77))] ##Unit vector or U
 
 
 ##Initial Parameters to define
-eccen_0 = 0.01 ##Eccentricity
-inc_0 = np.deg2rad(100)##Inclination
+eccen_0 = 0.98 ##Eccentricity
+inc_0 = np.deg2rad(97)##Inclination
 long_asc_node = np.deg2rad(0)##Longitude of Ascending Node (Omega)
-long_peri =np.deg2rad(90)##Longitude of Pericenter (omega)
+long_peri =np.deg2rad(0)##Longitude of Pericenter (omega)
 
 ##Defining j (~anglular momentum) and e(~Runge-Lenz Vector)
 jhat = np.array([np.sin(inc_0)*np.cos(long_asc_node),np.sin(inc_0)*np.sin(long_asc_node),np.cos(inc_0)])

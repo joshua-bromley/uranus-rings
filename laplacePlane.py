@@ -10,14 +10,14 @@ R = 1.6908e-4 ##Radius of Uranus in AU
 Ms = 1 ##Mass of the sun in solar masses
 ap = 19.165 ##Semi major axis of Uranus in AU
 n_p = [0,0,1] ##Unit vector of Uranus's spin angular momentum
-n_s = [np.sin(np.deg2rad(97.77)),0,np.cos(np.deg2rad(97.77))] ##Unit vector or Uranus's orbital angular momentum
+n_s = [np.sin(np.deg2rad(30)),0,np.cos(np.deg2rad(30))] ##Unit vector or Uranus's orbital angular momentum
 
-aList = np.logspace(np.log10(2*R),np.log10(300*R)) ##Semi-maxot axes to try
+aList = np.logspace(np.log10(2*R),np.log10(4000*R)) ##Semi-maxot axes to try
 
 def ddt(je, t):
     j = np.array(je[:3])
     e = np.array(je[3:])
-    eccen = np.sqrt(np.dot(e,e))
+    eccen = np.sqrt(np.dot(e,e)) 
 
     coeff1 = ((3*np.sqrt(G*M)*J2*R*R)/(2*a**(7/2)*(1-eccen**2)**(5/2))) ##J2 Contribution
     coeff2 = ((3*np.sqrt(G)*Ms*a**(3/2))/(4*np.sqrt(M)*ap**3)) ##Solar Contribution
@@ -78,13 +78,12 @@ iList = []
 spreadList = []
 
 for a in tqdm(aList):
-    testIncs = np.linspace(0,100,6)
+    testIncs = [0,15,30]
     results = []
     for I in testIncs:
         results.append(ringEvolution(a,inc0 = I, T = 100, N = 1e3))
     results = np.asarray(results)
     mostConverged = np.argmin(results[:,1])
-    print(testIncs[mostConverged])
     iList.append(results[mostConverged,0])
     spreadList.append(results[mostConverged,1])
 
