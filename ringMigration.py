@@ -6,7 +6,7 @@ G = 4*np.pi**2 ##Units of Solar Masses, AU and yrs
 M = 4.34e-5 ##Mass of Uranus in solar masses
 J2 = 3343.43e-6 ##J2 of Uranus
 R = 1.6908e-4 ##Radius of Uranus in AU
-a =60*R ##Semimajor axis of the test particle
+a = 500*R ##Semimajor axis of the test particle
 Ms = 1 ##Mass of the sun in solar masses
 ap = 19.165 ##Semi major axis of Uranus in AU
 n_p = [0,0,1] ##Unit vector of Uranus's spin angular momentum
@@ -14,17 +14,19 @@ n_s = [np.sin(np.deg2rad(97.77)),0,np.cos(np.deg2rad(97.77))] ##Unit vector or U
 
 
 ##Initial Parameters to define
-eccen_0 = 0.98 ##Eccentricity
-inc_0 = np.deg2rad(97)##Inclination
+eccen_0 = 0.99 ##Eccentricity
+inc_0 = np.deg2rad(97.77)##Inclination
 long_asc_node = np.deg2rad(0)##Longitude of Ascending Node (Omega)
 long_peri =np.deg2rad(0)##Longitude of Pericenter (omega)
 
 ##Defining j (~anglular momentum) and e(~Runge-Lenz Vector)
 jhat = np.array([np.sin(inc_0)*np.cos(long_asc_node),np.sin(inc_0)*np.sin(long_asc_node),np.cos(inc_0)])
 j0 = np.sqrt(1-eccen_0**2)*jhat
-ehat = np.array([eccen_0*np.cos(long_asc_node),eccen_0*np.sin(long_asc_node),0])
+ehat = np.array([eccen_0*np.sin(long_asc_node),eccen_0*np.cos(long_asc_node),0])
 e0 = ehat*np.cos(long_peri) + np.cross(jhat,ehat)*np.sin(long_peri) + jhat*np.dot(jhat,ehat)*(1-np.cos(long_peri))
 je0 = np.concatenate((j0,e0))
+
+print(n_s,j0)
 
 omJ2 = ((3*np.sqrt(G*M)*J2*R*R)/(2*a**(7/2)*(1-eccen_0**2)**(5/2)))
 omS = ((3*np.sqrt(G*M)*Ms*a**(3/2))/(4*M*ap**3))*np.dot(j0,n_s)
@@ -224,11 +226,15 @@ fig.savefig("./ringMigration2D.png")
 
 fig2 = plt.figure()
 ax2 = fig2.add_subplot(projection="3d")
-ax2.plot(n[:,0],n[:,1],n[:,2])
-ax2.plot((0,avgN[0]),(0,avgN[1]),(0,avgN[2]))
+ax2.plot(e[:,0],e[:,1],e[:,2])
+ax2.plot(0,0,0, marker = "o")
+#ax2.plot((0,avgN[0]),(0,avgN[1]),(0,avgN[2]))
 ax2.set_xlim(-1.1,1.1)
 ax2.set_ylim(-1.1,1.1)
 ax2.set_zlim(-1.1,1.1)
+ax2.set_xlabel("x")
+ax2.set_ylabel("y")
+ax2.set_zlabel("z")
 #ax2.view_init(90,0)
 
 plt.show()

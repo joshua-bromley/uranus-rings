@@ -10,9 +10,12 @@ R = 1.6908e-4 ##Radius of Uranus in AU
 Ms = 1 ##Mass of the sun in solar masses
 ap = 19.165 ##Semi major axis of Uranus in AU
 n_p = [0,0,1] ##Unit vector of Uranus's spin angular momentum
-n_s = [np.sin(np.deg2rad(30)),0,np.cos(np.deg2rad(30))] ##Unit vector or Uranus's orbital angular momentum
+inc_s = 97.77
+e_s = 0.04717
+rL = (J2*R*R*(ap**3)*((1-e_s**2)**(3/2))*M/Ms)**(1/5)
+n_s = [np.sin(np.deg2rad(inc_s)),0,np.cos(np.deg2rad(inc_s))] ##Unit vector or Uranus's orbital angular momentum
 
-aList = np.logspace(np.log10(2*R),np.log10(4000*R)) ##Semi-maxot axes to try
+aList = np.logspace(np.log10(2*R),np.log10(4000*R),100) ##Semi-maxot axes to try
 
 def ddt(je, t):
     j = np.array(je[:3])
@@ -75,31 +78,49 @@ def ringEvolution(a, eccen0 = 0.01, inc0 = 0, longAscNode0 = 0, longPeri0 = 0, T
     return avgInclination, spread
 
 iList = []
+initialI = []
 spreadList = []
 
+
 for a in tqdm(aList):
-    testIncs = [0,15,30]
-    results = []
-    for I in testIncs:
-        results.append(ringEvolution(a,inc0 = I, T = 100, N = 1e3))
+    I = np.arctan2(np.sin(2*np.deg2rad(inc_s)),np.cos(2*np.deg2rad(inc_s))+2*(rL/a)**5)
+    if I < 0:
+        I = I + 2*np.pi
+    I = I/2
+    if I > np.pi:
+        I = I - np.pi
+    initialI.append(I)
+    results = ringEvolution(a,inc0 = I, T = 100, N = 1e3)
     results = np.asarray(results)
-    mostConverged = np.argmin(results[:,1])
-    iList.append(results[mostConverged,0])
-    spreadList.append(results[mostConverged,1])
+    iList.append(results[0])
+    spreadList.append(results[1])
 
 spreadList = np.asarray(spreadList)
 spreadList = 5 * spreadList / np.max(spreadList)
 
 aList = aList/R
 
+x = np.logspace(np.log10(2*R),np.log10(4000*R),1000)
+y = [np.rad2deg(0.5*np.arctan2(np.sin(2*np.deg2rad(inc_s)),np.cos(2*np.deg2rad(inc_s))+2*(rL/xi)**5)) for xi in x]
+if inc_s > 90:
+    for i in range(len(y)):
+        y[i] = y[i] + 180
+        if y[i] > 180:
+            y[i] -= 180
+
+x = x/R
+
 fig, ax = plt.subplots(1,1)
 ax.plot(aList,iList, ls = "", marker = ".")
+ax.plot(x,y, alpha = 0.8)
 ax.set_xscale("log")
 ax.set_ylabel("Inclination (Degrees)")
 ax.set_xlabel("Semi Major Axis $(R_p)$")
-fig.savefig("./laplacePlane.png")
+ax.text(1e3, 170, "I = 97.77 deg")
+fig.savefig("./laplacePlane97deg.png")
 plt.show()
 
+#print(np.rad2deg(initialI))
 
 
 
