@@ -67,7 +67,7 @@ jList = []
 time = []
 e0List = []
 
-for a in tqdm(aList):
+for a in aList:
     e0 = 1 - 2*R/a
     e0List.append(e0)
     j,e,t = ringEvolution(a = a, eccen_0=e0, inc_0= 97.77, T = 1e5, N = 1e6)
@@ -114,7 +114,7 @@ for i in range(len(aList)):
     a = aList[i]
     for theta in angles:
         r = a*(1-e*e)/(1+e*np.cos(theta))
-        x = periVec*r 
+        x = periVec*r
         x = x*np.cos(theta) + np.cross(jNorm,x)*np.sin(theta) + jNorm*np.dot(jNorm,x)*(1-np.cos(theta))
         disk.append(x)
 
@@ -127,6 +127,16 @@ for i in range(len(disks)):
     ax.plot(disks[i][:,0],disks[i][:,1],disks[i][:,2])
 
 fig.savefig("./disk.png")
-plt.show()
+
+fig3, ax3 = plt.subplots(1,1)
+for i in range(len(disks)):
+    for j in range(len(disks[i])):
+        if (np.sqrt(disks[i][j,0]**2 + disks[i][j,1]**2 + disks[i][j,2]**2) < 3*R):
+            ax3.plot(disks[i][j,0],disks[i][j,2],alpha = 0.8,color = "tab:blue",marker = ",")
+        #print(disks[i][j,0],disks[i][j,2])
+ax3.grid(axis = "x", color = '0.95')
+ax3.grid(axis = "y", color = "0.95")
+
+fig3.savefig("./diskCrossSection.png")
 
 
