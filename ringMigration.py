@@ -6,7 +6,7 @@ G = 4*np.pi**2 ##Units of Solar Masses, AU and yrs
 M = 4.34e-5 ##Mass of Uranus in solar masses
 J2 = 3343.43e-6 ##J2 of Uranus
 R = 1.6908e-4 ##Radius of Uranus in AU
-a = 500*R ##Semimajor axis of the test particle
+a = 2000*R ##Semimajor axis of the test particle
 Ms = 1 ##Mass of the sun in solar masses
 ap = 19.165 ##Semi major axis of Uranus in AU
 n_p = [0,0,1] ##Unit vector of Uranus's spin angular momentum
@@ -26,7 +26,6 @@ ehat = np.array([eccen_0*np.sin(long_asc_node),eccen_0*np.cos(long_asc_node),0])
 e0 = ehat*np.cos(long_peri) + np.cross(jhat,ehat)*np.sin(long_peri) + jhat*np.dot(jhat,ehat)*(1-np.cos(long_peri))
 je0 = np.concatenate((j0,e0))
 
-print(n_s,j0)
 
 omJ2 = ((3*np.sqrt(G*M)*J2*R*R)/(2*a**(7/2)*(1-eccen_0**2)**(5/2)))
 omS = ((3*np.sqrt(G*M)*Ms*a**(3/2))/(4*M*ap**3))*np.dot(j0,n_s)
@@ -36,7 +35,7 @@ T_omS = 2*np.pi/(omS)
 print(f"Orbital Period = {T} yrs = {365.25*T} days")
 print(f"J2 Procession Period = {T_omJ2} yrs")
 print(f"Solar Procession Period = {T_omS} yrs")
-tend = 100*T_omJ2 if T_omJ2 < T_omS else 100*T_omS
+tend = 100000#500*T_omJ2 if T_omJ2 < T_omS else 100*T_omS
 
 
 
